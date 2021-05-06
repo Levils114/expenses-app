@@ -1,5 +1,6 @@
 import 'package:expenses/models/transaction.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 void main() => runApp(ExpensesApp());
 
@@ -9,17 +10,20 @@ class ExpensesApp extends StatelessWidget {
     return (MaterialApp(
       debugShowCheckedModeBanner: false,
       home: HomePage(),
-      theme: ThemeData.dark(),
+      theme: ThemeData.light(),
     ));
   }
 }
 
 class HomePage extends StatelessWidget {
+  final titleController = TextEditingController();
+  final valueController = TextEditingController();
+
   final _transactions = [
     Transaction(
       id: 't1',
       title: 'Novo Tênis de Corrida',
-      value: 300.76,
+      value: 310.76,
       date: DateTime.now(),
     ),
     Transaction(
@@ -37,11 +41,11 @@ class HomePage extends StatelessWidget {
         title: Text('Despesas Pessoais'),
       ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Container(
             child: Card(
+              color: Colors.blue,
               child: Text('Gráfico'),
             ),
           ),
@@ -63,7 +67,7 @@ class HomePage extends StatelessWidget {
                       ),
                       padding: EdgeInsets.all(10),
                       child: Text(
-                        transaction.value.toString(),
+                        "R\$ ${transaction.value.toStringAsFixed(2)}",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
@@ -82,7 +86,7 @@ class HomePage extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          transaction.date.toString(),
+                          DateFormat('dd MMM y').format(transaction.date),
                           style: TextStyle(
                             color: Colors.grey,
                           ),
@@ -93,6 +97,41 @@ class HomePage extends StatelessWidget {
                 ),
               );
             }).toList(),
+          ),
+          Card(
+            elevation: 5,
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                children: [
+                  TextField(
+                    decoration: InputDecoration(labelText: 'Título'),
+                    controller: titleController,
+                  ),
+                  TextField(
+                    decoration: InputDecoration(labelText: 'Valor (R\$)'),
+                    controller: valueController,
+                  ),
+                  Container(
+                    alignment: Alignment.centerRight,
+                    child: TextButton(
+                      onPressed: () {
+                        print({
+                          titleController.text,
+                          valueController.text,
+                        });
+                      },
+                      child: Text(
+                        'Nova Transação',
+                        style: TextStyle(
+                          color: Colors.purple,
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
           ),
         ],
       ),

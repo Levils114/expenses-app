@@ -30,7 +30,7 @@ class ChartWidget extends StatelessWidget {
         'day': DateFormat.E().format(weekDay).substring(0, 1),
         'value': totalSum,
       };
-    });
+    }).reversed.toList();
   }
 
   double get _totalValue {
@@ -51,8 +51,9 @@ class ChartWidget extends StatelessWidget {
               .map((transaction) => Flexible(
                     fit: FlexFit.tight,
                     child: ChartBarWidget(
-                      percentage:
-                          (transaction['value'] as double) / _totalValue,
+                      percentage: _totalValue == 0
+                          ? 0
+                          : (transaction['value'] as double) / _totalValue,
                       value: transaction['value'],
                       label: transaction['day'],
                     ),

@@ -24,6 +24,10 @@ class ExpensesApp extends StatelessWidget {
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
+          button: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         appBarTheme: AppBarTheme(
           textTheme: TextTheme(
@@ -45,26 +49,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final List<Transaction> _transactions = [
-    Transaction(
-      id: 't0',
-      title: 'Barra',
-      value: 110.76,
-      date: DateTime.now().subtract(Duration(days: 33)),
-    ),
-    Transaction(
-      id: 't1',
-      title: 'Novo Tênis de Corrida',
-      value: 310.76,
-      date: DateTime.now().subtract(Duration(days: 3)),
-    ),
-    Transaction(
-      id: 't2',
-      title: 'Camisa Santos 21/22',
-      value: 250.00,
-      date: DateTime.now().subtract(Duration(days: 4)),
-    ),
-  ];
+  final List<Transaction> _transactions = [];
 
   List<Transaction> get _recentTransactions {
     return _transactions.where((Transaction transaction) {
@@ -73,12 +58,12 @@ class _HomePageState extends State<HomePage> {
     }).toList();
   }
 
-  _addTransaction(String title, double value) {
+  _addTransaction(String title, double value, DateTime selectedDate) {
     final newTransaction = Transaction(
       id: Random().nextDouble().toString(),
       title: title,
       value: value,
-      date: DateTime.now(),
+      date: selectedDate,
     );
 
     setState(() {
@@ -86,6 +71,12 @@ class _HomePageState extends State<HomePage> {
     });
 
     Navigator.of(context).pop();
+  }
+
+  _removeTransaction(String id) {
+    setState(() {
+      _transactions.removeWhere((transaction) => transaction.id == id);
+    });
   }
 
   _openTransactionFormModal(BuildContext context) {
@@ -118,6 +109,7 @@ class _HomePageState extends State<HomePage> {
             ),
             TransactionListWidget(
               transactions: _transactions,
+              removeTransactionFunction: _removeTransaction,
             ),
           ],
         ),

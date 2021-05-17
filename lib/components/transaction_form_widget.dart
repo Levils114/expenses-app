@@ -1,3 +1,5 @@
+import 'package:expenses/components/adaptative_button_widgtet.dart';
+import 'package:expenses/components/adaptative_textfield_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -15,6 +17,7 @@ class _TransactionFormWidgetState extends State<TransactionFormWidget> {
   final _valueController = TextEditingController();
   DateTime _selectedDate = DateTime.now();
 
+  final FocusNode titleTextfieldFocus = FocusNode();
   final FocusNode valueTextfieldFocus = FocusNode();
 
   _submitForm() {
@@ -57,17 +60,21 @@ class _TransactionFormWidgetState extends State<TransactionFormWidget> {
           padding: const EdgeInsets.all(10),
           child: Column(
             children: [
-              TextField(
-                decoration: InputDecoration(labelText: 'Título'),
-                onSubmitted: (String _) => valueTextfieldFocus.requestFocus(),
+              AdaptativeTextfieldWidget(
                 controller: _titleController,
+                keyboardType: TextInputType.name,
+                focusNode: titleTextfieldFocus,
+                label: InputDecoration(labelText: 'Título'),
+                placeholder: 'Título',
+                onSubmit: (String _) => valueTextfieldFocus.requestFocus(),
               ),
-              TextField(
-                decoration: InputDecoration(labelText: 'Valor (R\$)'),
+              AdaptativeTextfieldWidget(
                 controller: _valueController,
-                focusNode: valueTextfieldFocus,
                 keyboardType: TextInputType.numberWithOptions(decimal: true),
-                onSubmitted: (String _) => _submitForm(),
+                focusNode: valueTextfieldFocus,
+                label: InputDecoration(labelText: 'Valor (R\$)'),
+                placeholder: 'Valor (R\$)',
+                onSubmit: (String _) => _submitForm(),
               ),
               SizedBox(
                 height: 8,
@@ -97,14 +104,8 @@ class _TransactionFormWidgetState extends State<TransactionFormWidget> {
               ),
               Container(
                 alignment: Alignment.centerRight,
-                child: ElevatedButton(
-                  onPressed: _submitForm,
-                  child: Text(
-                    'Nova Transação',
-                    style: TextStyle(
-                      color: Theme.of(context).textTheme.button.color,
-                    ),
-                  ),
+                child: AdapatativeButtonWidget(
+                  functionToSubmit: _submitForm(),
                 ),
               )
             ],

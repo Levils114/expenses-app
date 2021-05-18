@@ -42,7 +42,7 @@ class TransactionListWidget extends StatelessWidget {
             itemCount: transactions.length,
             itemBuilder: (context, index) => Card(
               elevation: 5,
-              margin: EdgeInsets.symmetric(
+              margin: const EdgeInsets.symmetric(
                 vertical: 8,
                 horizontal: 5,
               ),
@@ -66,7 +66,7 @@ class TransactionListWidget extends StatelessWidget {
                 ),
                 trailing: MediaQuery.of(context).size.width <= 400
                     ? IconButton(
-                        icon: Icon(Icons.delete),
+                        icon: const Icon(Icons.delete),
                         onPressed: () =>
                             removeTransactionFunction(transactions[index].id),
                         color: Theme.of(context).errorColor,

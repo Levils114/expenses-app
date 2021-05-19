@@ -1,6 +1,6 @@
+import 'package:expenses/components/transaction_item_widget.dart';
 import 'package:expenses/models/transaction.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class TransactionListWidget extends StatelessWidget {
   final List<Transaction> transactions;
@@ -40,52 +40,11 @@ class TransactionListWidget extends StatelessWidget {
           )
         : (ListView.builder(
             itemCount: transactions.length,
-            itemBuilder: (context, index) => Card(
-              elevation: 5,
-              margin: const EdgeInsets.symmetric(
-                vertical: 8,
-                horizontal: 5,
-              ),
-              child: ListTile(
-                leading: CircleAvatar(
-                  radius: 30,
-                  child: Padding(
-                    padding: const EdgeInsets.all(6),
-                    child: FittedBox(
-                      child: Text(
-                          'R\$ ${transactions[index].value.toStringAsFixed(2)}'),
-                    ),
-                  ),
-                ),
-                title: Text(
-                  transactions[index].title,
-                  style: Theme.of(context).textTheme.headline6,
-                ),
-                subtitle: Text(
-                  DateFormat('dd MMM y').format(transactions[index].date),
-                ),
-                trailing: MediaQuery.of(context).size.width <= 400
-                    ? IconButton(
-                        icon: const Icon(Icons.delete),
-                        onPressed: () =>
-                            removeTransactionFunction(transactions[index].id),
-                        color: Theme.of(context).errorColor,
-                      )
-                    : TextButton.icon(
-                        onPressed: () =>
-                            removeTransactionFunction(transactions[index].id),
-                        icon: Icon(
-                          Icons.delete,
-                          color: Theme.of(context).errorColor,
-                        ),
-                        label: Text(
-                          'Excluir',
-                          style: TextStyle(
-                            color: Theme.of(context).errorColor,
-                          ),
-                        ),
-                      ),
-              ),
+            itemBuilder: (context, index) => TransactionItemWidget(
+              removeTransactionFunction: removeTransactionFunction,
+              transactions: transactions,
+              index: index,
+              key: GlobalObjectKey(transactions[index]),
             ),
           ));
   }
